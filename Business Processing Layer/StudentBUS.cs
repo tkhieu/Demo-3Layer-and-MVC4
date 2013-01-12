@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business_Processing_Layer
 {
-    public class Class1
+    public class StudentBUS
     {
     }
 }

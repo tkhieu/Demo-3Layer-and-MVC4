@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.AccessUnit
 {
-    class StudentDAL
+    public class StudentDAL
     {
     }
 }

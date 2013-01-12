@@ -39,8 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ClassBUS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StudentBUS.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data Access Layer\Data Access Layer.csproj">
@@ -51,6 +52,9 @@
       <Project>{a9ffdbe2-ba42-4c9f-8bd7-fb1dfe31b090}</Project>
       <Name>Data Transfer Objects</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
