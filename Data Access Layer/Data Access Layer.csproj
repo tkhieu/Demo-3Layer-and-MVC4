@@ -60,6 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessUnit\ClassDAL.cs" />
+    <Compile Include="AccessUnit\StudentDAL.cs" />
     <Compile Include="Db\Class.cs">
       <DependentUpon>StudentModel.tt</DependentUpon>
     </Compile>
