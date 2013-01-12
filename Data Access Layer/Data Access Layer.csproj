@@ -60,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\Class.cs">
+      <DependentUpon>StudentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\Student.cs">
+      <DependentUpon>StudentModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Db\StudentModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

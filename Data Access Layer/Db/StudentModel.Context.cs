@@ -25,5 +25,7 @@ namespace Data_Access_Layer.Db
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<Student> Students { get; set; }
     }
 }
