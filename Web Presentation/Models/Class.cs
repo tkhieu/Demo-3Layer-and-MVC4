@@ -12,6 +12,8 @@ namespace Web_Presentation.Models
             this.Code = classDto.Code;
         }
 
+        public Class(){}
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }

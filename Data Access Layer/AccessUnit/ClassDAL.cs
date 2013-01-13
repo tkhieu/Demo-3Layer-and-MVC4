@@ -72,6 +72,7 @@ namespace Data_Access_Layer.AccessUnit
 
         public void Update(ClassDTO classDto)
         {
+            _db = new StudentDbEntities();
             Class c = _db.Classes.First(p => p.Id == classDto.Id);
             c.Name = classDto.Name;
             c.Code = classDto.Code;
