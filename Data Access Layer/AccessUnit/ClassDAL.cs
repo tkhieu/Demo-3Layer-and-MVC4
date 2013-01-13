@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data_Access_Layer.Db;
 using Data_Transfer_Objects;
@@ -34,7 +35,7 @@ namespace Data_Access_Layer.AccessUnit
             return listDto;
         }
 
-        private ClassDTO GetById(int classId)
+        public ClassDTO GetById(int classId)
         {
             _db = new StudentDbEntities();
             var classDto = new ClassDTO();
@@ -43,6 +44,47 @@ namespace Data_Access_Layer.AccessUnit
             classDto.Name = c.Name;
             classDto.Code = c.Code;
             return classDto;
+        }
+
+        public void Save(ClassDTO classDto)
+        {
+            _db = new StudentDbEntities();
+            Class c = new Class();
+            c.Id = GetMaxId();
+            c.Name = classDto.Name;
+            c.Code = classDto.Code;
+            _db.Classes.Add(c);
+            _db.SaveChanges();
+        }
+
+        private int GetMaxId()
+        {
+            try
+            {
+                _db = new StudentDbEntities();
+                return _db.Classes.Max(p => p.Id)+1;
+            }
+            catch (Exception)
+            {
+                return 1;
+            }
+        }
+
+        public void Update(ClassDTO classDto)
+        {
+            Class c = _db.Classes.First(p => p.Id == classDto.Id);
+            c.Name = classDto.Name;
+            c.Code = classDto.Code;
+            _db.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            _db = new StudentDbEntities();
+            Class c = _db.Classes.First(p => p.Id == id);
+            _db.Classes.Remove(c);
+            _db.SaveChanges();
+
         }
     }
 }

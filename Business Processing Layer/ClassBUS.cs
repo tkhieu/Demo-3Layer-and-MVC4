@@ -21,22 +21,27 @@ namespace Business_Processing_Layer
 
         public Data_Transfer_Objects.ClassDTO GetById(int id)
         {
-            throw new NotImplementedException();
+            _classDal = new ClassDAL();
+            ClassDTO classDto = _classDal.GetById(id);
+            return classDto;
         }
 
         public void Save(Data_Transfer_Objects.ClassDTO classDto)
         {
-            throw new NotImplementedException();
+            _classDal = new ClassDAL();
+            _classDal.Save(classDto);
         }
 
         public void Update(ClassDTO classDto)
         {
-            throw new NotImplementedException();
+            _classDal = new ClassDAL();
+            _classDal.Update(classDto);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _classDal = new ClassDAL();
+            _classDal.Delete(id);
         }
     }
 }

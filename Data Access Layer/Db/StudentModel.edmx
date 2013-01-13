@@ -4,16 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="StudentDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="StudentDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="StudentDbModelStoreContainer">
-          <EntitySet Name="Class" EntityType="StudentDbModel.Store.Class" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Student" EntityType="StudentDbModel.Store.Student" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Classes" EntityType="StudentDbModel.Store.Classes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Students" EntityType="StudentDbModel.Store.Students" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_Student_Class" Association="StudentDbModel.Store.FK_Student_Class">
-            <End Role="Class" EntitySet="Class" />
-            <End Role="Student" EntitySet="Student" />
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Students" EntitySet="Students" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Class">
+        <EntityType Name="Classes">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -21,7 +21,7 @@
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Code" Type="nchar" Nullable="false" MaxLength="10" />
         </EntityType>
-        <EntityType Name="Student">
+        <EntityType Name="Students">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -33,58 +33,59 @@
           <Property Name="Mark3" Type="decimal" />
         </EntityType>
         <Association Name="FK_Student_Class">
-          <End Role="Class" Type="StudentDbModel.Store.Class" Multiplicity="1" />
-          <End Role="Student" Type="StudentDbModel.Store.Student" Multiplicity="*" />
+          <End Role="Classes" Type="StudentDbModel.Store.Classes" Multiplicity="1" />
+          <End Role="Students" Type="StudentDbModel.Store.Students" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Class">
+            <Principal Role="Classes">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Student">
+            <Dependent Role="Students">
               <PropertyRef Name="ClassId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StudentDbModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="StudentDbEntities" p1:LazyLoadingEnabled="true" >
+        <EntityContainer Name="StudentDbEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="Classes" EntityType="StudentDbModel.Class" />
           <EntitySet Name="Students" EntityType="StudentDbModel.Student" />
           <AssociationSet Name="FK_Student_Class" Association="StudentDbModel.FK_Student_Class">
-            <End Role="Class" EntitySet="Classes" />
-            <End Role="Student" EntitySet="Students" />
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Students" EntitySet="Students" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Code" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Students" Relationship="StudentDbModel.FK_Student_Class" FromRole="Class" ToRole="Student" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
+          <NavigationProperty Name="Students" Relationship="StudentDbModel.FK_Student_Class" FromRole="Classes" ToRole="Students" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="ClassId" Nullable="false" />
-          <Property Type="Decimal" Name="Mark1" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="Mark2" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="Mark3" Precision="18" Scale="0" />
-          <NavigationProperty Name="Class" Relationship="StudentDbModel.FK_Student_Class" FromRole="Student" ToRole="Class" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="ClassId" Type="Int32" Nullable="false" />
+          <Property Name="Mark1" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Mark2" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Mark3" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Class" Relationship="StudentDbModel.FK_Student_Class" FromRole="Students" ToRole="Classes" />
         </EntityType>
         <Association Name="FK_Student_Class">
-          <End Type="StudentDbModel.Class" Role="Class" Multiplicity="1" />
-          <End Type="StudentDbModel.Student" Role="Student" Multiplicity="*" />
+          <End Role="Classes" Type="StudentDbModel.Class" Multiplicity="1" />
+          <End Role="Students" Type="StudentDbModel.Student" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Class">
+            <Principal Role="Classes">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Student">
+            <Dependent Role="Students">
               <PropertyRef Name="ClassId" />
             </Dependent>
           </ReferentialConstraint>
@@ -94,25 +95,25 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="StudentDbModelStoreContainer" CdmEntityContainer="StudentDbEntities" >
+        <EntityContainerMapping StorageEntityContainer="StudentDbModelStoreContainer" CdmEntityContainer="StudentDbEntities">
           <EntitySetMapping Name="Classes">
             <EntityTypeMapping TypeName="StudentDbModel.Class">
-              <MappingFragment StoreEntitySet="Class">
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+              <MappingFragment StoreEntitySet="Classes">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="StudentDbModel.Student">
-              <MappingFragment StoreEntitySet="Student">
-                <ScalarProperty Name="Mark3" ColumnName="Mark3" />
-                <ScalarProperty Name="Mark2" ColumnName="Mark2" />
-                <ScalarProperty Name="Mark1" ColumnName="Mark1" />
-                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+              <MappingFragment StoreEntitySet="Students">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="Mark1" ColumnName="Mark1" />
+                <ScalarProperty Name="Mark2" ColumnName="Mark2" />
+                <ScalarProperty Name="Mark3" ColumnName="Mark3" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
