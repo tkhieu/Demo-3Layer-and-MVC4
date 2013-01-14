@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
+using Business_Processing_Layer;
+using Data_Transfer_Objects;
 using Web_Presentation.Models;
 
 namespace Web_Presentation.Controllers
 {
     public class StudentController : Controller
     {
-        private Context db = new Context();
+        private readonly Context _db = new Context();
+        private readonly StudentBUS _studentBus = new StudentBUS();
 
         //
         // GET: /Student/
 
         public ActionResult Index()
         {
-            return View(db.Students.ToList());
+            var listStudentDtos = _studentBus.GetList();
+            var students = listStudentDtos.Select(studentDto => new Student(studentDto)).ToList();
+            return View(students);
         }
 
         //
@@ -26,12 +26,13 @@ namespace Web_Presentation.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            Student student = db.Students.Find(id);
-            if (student == null)
+            StudentDTO studentDto = _studentBus.GetById(id);
+            var s = new Student(studentDto);
+            if (studentDto == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(s);
         }
 
         //
@@ -50,8 +51,15 @@ namespace Web_Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Students.Add(student);
-                db.SaveChanges();
+                var studentDto = new StudentDTO
+                                     {
+                                         Name = student.Name,
+                                         ClassId = student.ClassId,
+                                         Mark1 = student.Mark1,
+                                         Mark2 = student.Mark2,
+                                         Mark3 = student.Mark3
+                                     };
+                _studentBus.Save(studentDto);
                 return RedirectToAction("Index");
             }
 
@@ -63,11 +71,8 @@ namespace Web_Presentation.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            Student student = db.Students.Find(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
+            StudentDTO studentDto = _studentBus.GetById(id);
+            var student = new Student(studentDto);
             return View(student);
         }
 
@@ -79,8 +84,16 @@ namespace Web_Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
-                db.SaveChanges();
+                var studentDto = new StudentDTO
+                                     {
+                                         Id = student.Id,
+                                         Name = student.Name,
+                                         ClassId = student.ClassId,
+                                         Mark1 = student.Mark1,
+                                         Mark2 = student.Mark2,
+                                         Mark3 = student.Mark3
+                                     };
+                _studentBus.Update(studentDto);
                 return RedirectToAction("Index");
             }
             return View(student);
@@ -91,11 +104,8 @@ namespace Web_Presentation.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            Student student = db.Students.Find(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
+            StudentDTO studentDto = _studentBus.GetById(id);
+            var student = new Student(studentDto);
             return View(student);
         }
 
@@ -105,15 +115,13 @@ namespace Web_Presentation.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
+            _studentBus.Delete(id);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            _db.Dispose();
             base.Dispose(disposing);
         }
     }

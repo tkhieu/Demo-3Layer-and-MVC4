@@ -85,7 +85,6 @@ namespace Data_Access_Layer.AccessUnit
             Class c = _db.Classes.First(p => p.Id == id);
             _db.Classes.Remove(c);
             _db.SaveChanges();
-
         }
     }
 }

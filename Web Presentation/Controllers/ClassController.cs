@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Data_Transfer_Objects;
 using Web_Presentation.Models;
@@ -13,7 +9,7 @@ namespace Web_Presentation.Controllers
 {
     public class ClassController : Controller
     {
-        ClassBUS _classBus = new ClassBUS();
+        readonly ClassBUS _classBus = new ClassBUS();
 
         //
         // GET: /Class/
@@ -21,11 +17,7 @@ namespace Web_Presentation.Controllers
         public ActionResult Index()
         {
             List<ClassDTO> listClassDTO = _classBus.GetList();
-            List<Class> classes = new List<Class>();
-            foreach (var classDto in listClassDTO)
-            {
-                classes.Add(new Class(classDto));
-            }
+            var classes = listClassDTO.Select(classDto => new Class(classDto)).ToList();
             return View(classes);
         }
 
@@ -59,9 +51,7 @@ namespace Web_Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                ClassDTO classDto = new ClassDTO();
-                classDto.Name = c.Name;
-                classDto.Code = c.Code;
+                var classDto = new ClassDTO {Name = c.Name, Code = c.Code};
                 _classBus.Save(classDto);
                 return RedirectToAction("Index");
             }
@@ -88,10 +78,7 @@ namespace Web_Presentation.Controllers
             if (ModelState.IsValid)
             {
 
-                ClassDTO classDto = new ClassDTO();
-                classDto.Id = c.Id;
-                classDto.Name = c.Name;
-                classDto.Code = c.Code;
+                var classDto = new ClassDTO {Id = c.Id, Name = c.Name, Code = c.Code};
                 _classBus.Update(classDto);
                 return RedirectToAction("Index");
             }
@@ -116,11 +103,6 @@ namespace Web_Presentation.Controllers
         {
             _classBus.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
         }
     }
 }
